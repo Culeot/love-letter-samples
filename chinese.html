@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>新中式 · 水墨 · 样品</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2b2b;--red:#c3272b;--gold:#b8860b;--paper:#f2ede4}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;position:fixed;touch-action:none;font-family:'Noto Serif SC',serif;background:#1a1a1a;color:var(--ink)}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.2s ease;overflow:hidden}
+.scene.active{opacity:1;visibility:visible;pointer-events:all}
+/* 宣纸底 */
+.paper{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#f7f3ea,#ece4d2 70%,#ddd2ba)}
+.paper::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='140' height='140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
+/* 远山 */
+.mtn{position:absolute;bottom:0;left:0;width:100%;height:44%;pointer-events:none;z-index:1}
+/* 云雾 */
+.mist{position:absolute;left:0;right:0;height:120px;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 30% 50%,rgba(247,243,234,.9),transparent 60%),radial-gradient(ellipse at 75% 40%,rgba(247,243,234,.85),transparent 55%);filter:blur(6px);animation:moveslow 14s ease-in-out infinite alternate}
+@keyframes moveslow{0%{transform:translateX(-4%)}100%{transform:translateX(4%)}}
+/* 红印 */
+.sealred{position:absolute;width:54px;height:54px;border-radius:6px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#f7f3ea;font-family:'Ma Shan Zheng',cursive;font-size:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:4}
+/* 内容 */
+.art{position:absolute;z-index:4;top:16%;left:0;right:0;text-align:center;padding:0 26px}
+.title{font-family:'Ma Shan Zheng',cursive;font-size:clamp(2.8rem,12vw,4.4rem);color:var(--ink);text-shadow:2px 2px 4px rgba(0,0,0,.12);line-height:1.2}
+.title .red{color:var(--red)}
+.sub{font-size:clamp(.75rem,2.6vw,.95rem);letter-spacing:8px;color:rgba(43,43,43,.7);margin-top:8px}
+.body{font-size:clamp(.95rem,3.2vw,1.12rem);line-height:2.3;color:rgba(43,43,43,.85);max-width:580px;margin:20px auto 0;text-align:left;text-indent:2em}
+.sig{font-family:'Ma Shan Zheng',cursive;font-size:1.6rem;color:var(--red);text-align:right;margin-top:14px;max-width:580px;margin-left:auto;margin-right:auto}
+.btn{display:inline-block;margin-top:28px;padding:12px 42px;cursor:pointer;font-family:'Noto Serif SC',serif;font-size:.95rem;letter-spacing:6px;color:var(--red);background:transparent;border:1.5px solid var(--red);transition:all .4s;box-shadow:0 0 0 0 rgba(195,39,43,0)}
+.btn:hover{background:var(--red);color:#f7f3ea;box-shadow:0 4px 18px rgba(195,39,43,.3)}
+/* 画心 */
+.hwrap{position:absolute;z-index:4;bottom:11vh;left:50%;transform:translateX(-50%);width:100%;padding:0 16px;text-align:center}
+.ht{font-family:'Ma Shan Zheng',cursive;font-size:2rem;color:var(--ink);margin-bottom:4px}
+.hh{font-size:.8rem;color:rgba(43,43,43,.65);letter-spacing:3px;margin-bottom:10px}
+.cf{position:relative;width:min(320px,84vw);height:min(240px,62vw);margin:0 auto 8px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.5);box-shadow:0 0 0 1px rgba(43,43,43,.2)}
+#cv{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+.cov{position:absolute;inset:0;z-index:5;background:rgba(247,243,234,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .6s}
+.cov.v{opacity:1;pointer-events:auto}
+.cb{padding:10px 34px;cursor:pointer;font-size:.9rem;letter-spacing:4px;color:var(--red);background:transparent;border:1.5px solid var(--red)}
+.hc{display:flex;justify-content:center;align-items:center;gap:14px;font-size:.85rem;color:var(--ink)}
+.rb{padding:7px 20px;cursor:pointer;font-size:.78rem;color:var(--ink);background:rgba(255,255,255,.6);border:1px solid rgba(43,43,43,.4)}
+/* 翻页 */
+.next{position:fixed;bottom:44px;left:50%;transform:translateX(-50%);z-index:60;padding:10px 38px;cursor:pointer;font-size:.85rem;letter-spacing:5px;color:var(--ink);background:rgba(247,243,234,.8);border:1px solid rgba(43,43,43,.4);transition:all .4s}
+.next:hover{background:var(--ink);color:#f7f3ea}
+.next.h{opacity:0;pointer-events:none}
+.dots{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:6px;padding:4px 10px;border-radius:10px;background:rgba(247,243,234,.7)}
+.pt{width:5px;height:5px;border-radius:50%;background:rgba(43,43,43,.35);cursor:pointer;transition:all .3s}
+.pt.a{background:var(--red);width:16px}
+</style>
+</head>
+<body>
+<div id="scenes">
+<div class="scene active" id="s0">
+    <div class="paper"></div>
+    <svg class="mtn" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMax slice"><path d="M0 440 L0 300 Q120 180 240 260 Q360 120 480 230 Q560 90 660 210 Q760 140 860 240 Q930 190 1000 250 L1000 440Z" fill="rgba(43,43,43,.82)"/><path d="M0 440 L0 340 Q180 240 320 320 Q460 220 600 310 Q740 240 860 330 Q940 290 1000 330 L1000 440Z" fill="rgba(43,43,43,.45)"/></svg>
+    <div class="mist" style="top:52%"></div>
+    <div class="sealred" style="top:14%;right:10%">爱</div>
+    <div class="art">
+        <div class="title"><span class="red">情</span> 书</div>
+        <div class="sub">纸短情长 · 见字如面</div>
+        <button class="btn" onclick="go(1)">展 信 佳</button>
+    </div>
+</div>
+<div class="scene" id="s1">
+    <div class="paper"></div>
+    <svg class="mtn" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMax slice"><path d="M0 440 L0 330 Q150 210 300 290 Q420 160 560 270 Q700 190 840 280 Q920 240 1000 290 L1000 440Z" fill="rgba(43,43,43,.6)"/></svg>
+    <div class="mist" style="top:58%"></div>
+    <div class="art">
+        <div class="title">初见</div>
+        <div class="body">那年春日,陌上花开。你从烟雨里走来,一袭青衫,眉眼含笑。从此山河远阔,人间烟火,无一不是你。</div>
+        <div class="sig">— 谨以白头之约</div>
+    </div>
+</div>
+<div class="scene" id="s2">
+    <div class="paper"></div>
+    <svg class="mtn" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMax slice"><path d="M0 440 L0 310 Q130 200 280 280 Q400 150 540 250 Q680 180 820 270 Q910 220 1000 270 L1000 440Z" fill="rgba(43,43,43,.7)"/></svg>
+    <div class="mist" style="top:55%"></div>
+    <div class="sealred" style="bottom:8%;left:8%">缘</div>
+    <div class="art">
+        <div class="title">相守</div>
+        <div class="body">愿有岁月可回首,且以深情共白头。春来看花,夏听蝉鸣,秋拾落叶,冬拥炉火,四季有你,便是人间好时节。</div>
+        <div class="sig">— 余生请多指教</div>
+    </div>
+</div>
+<div class="scene" id="s3">
+    <div class="paper"></div>
+    <div class="hwrap">
+        <div class="ht">画心</div>
+        <div class="hh">以水墨之笔,描心中之形</div>
+        <div class="cf"><canvas id="cv"></canvas><div class="cov" id="cov"><div style="font-family:'Ma Shan Zheng';font-size:1.9rem;color:var(--red)">心心相印</div><button class="cb" onclick="go(4)">续</button></div></div>
+        <div class="hc"><span id="pg">0%</span><button class="rb" id="rb">↺ 重描</button></div>
+    </div>
+</div>
+<div class="scene" id="s4">
+    <div class="paper"></div>
+    <svg class="mtn" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMax slice"><path d="M0 440 L0 320 Q140 210 300 290 Q420 170 560 270 Q700 200 840 280 Q920 240 1000 290 L1000 440Z" fill="rgba(43,43,43,.5)"/></svg>
+    <div class="mist" style="top:54%"></div>
+    <div class="sealred" style="top:16%;left:12%">永</div>
+    <div class="art">
+        <div class="title">结发为夫妻</div>
+        <div class="body">恩爱两不疑。此生此世,唯愿与你,执子之手,与子偕老。</div>
+    </div>
+</div>
+</div>
+<div class="dots" id="dots"></div>
+<button class="next" id="next" onclick="go(cur+1)">NEXT ❦</button>
+<script>
+const N=5;let cur=0;
+function go(i){if(i<0||i>=N)return;cur=i;for(let k=0;k<N;k++)document.getElementById('s'+k).classList.toggle('active',k===i);document.querySelectorAll('.pt').forEach((d,k)=>d.classList.toggle('a',k===i));document.getElementById('next').classList.toggle('h',i===0||i===3||i>=N-1);if(i===3)setTimeout(()=>window.HM&&HM.reset(),350)}
+const dd=document.getElementById('dots');for(let i=0;i<N;i++){const d=document.createElement('div');d.className='pt'+(i===0?' a':'');d.onclick=()=>go(i);dd.appendChild(d)}
+(function(){'use strict';const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),W=320,H=240,CX=W/2,CY=H/2-2,OY=5.5,SO=5.0,SM=3.7,SI=2.4,HIT=14,STEP=4,SAM=150,DEN=2000,WT=[.4,.35,.25],UL=.5,CP=.85;const dpr=Math.min(devicePixelRatio||1,3);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);function hx(t){return 16*Math.pow(Math.sin(t),3)}function hy(t){return 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)}function tc(t,s){return{x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s}}function gen(n,s){const d=[];for(let i=0;i<=DEN;i++){const t=i/DEN*Math.PI*2;d.push({t,x:hx(t),y:hy(t)})}const c=[0];for(let i=1;i<=DEN;i++){const dx=d[i].x-d[i-1].x,dy=d[i].y-d[i-1].y;c.push(c[i-1]+Math.sqrt(dx*dx+dy*dy))}const tot=c[DEN],o=[];for(let i=0;i<n;i++){const tg=i/n*tot;let lo=0,hi=DEN;while(lo<hi){const m=(lo+hi)>>1;if(c[m]<tg)lo=m+1;else hi=m}const p=tc(d[Math.min(lo,DEN)].t,s);o.push({x:p.x,y:p.y,hit:false})}return o}const L=[gen(SAM,SO),gen(SAM,SM),gen(SAM,SI)],hc=[0,0,0],ac=[true,false,false];let st=[],dw=false,last=null,pg=0,done=false,fill=0,pt=[];function calc(){let t=0;for(let i=0;i<3;i++)if(ac[i])t+=WT[i]*(hc[i]/L[i].length);return Math.min(1,t)}function proc(x,y){if(done)return;const ts=HIT*HIT;for(let l=0;l<3;l++){if(!ac[l])continue;for(let i=0;i<L[l].length;i++){if(L[l][i].hit)continue;const dx=L[l][i].x-x,dy=L[l][i].y-y;if(dx*dx+dy*dy<=ts){L[l][i].hit=true;hc[l]++}}}pg=calc();const r0=hc[0]/L[0].length,r1=hc[1]/L[1].length;if(r0>=UL&&!ac[1])ac[1]=true;if(r1>=UL&&!ac[2])ac[2]=true;if(!done&&pg>=CP){done=true}}function seg(x1,y1,x2,y2){const dx=x2-x1,dy=y2-y1,ds=Math.sqrt(dx*dx+dy*dy),n=Math.max(1,Math.floor(ds/STEP));for(let i=1;i<=n;i++){const t=i/n;proc(x1+dx*t,y1+dy*t);st.push({x:x1+dx*t,y:y1+dy*t,a:1})}}function add(x,y){if(last)seg(last.x,last.y,x,y);else{proc(x,y);st.push({x,y,a:1})}last={x,y};if(st.length>600)st.splice(0,st.length-600)}function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}function tpos(e){const r=cv.getBoundingClientRect();return{x:(e.touches[0].clientX-r.left)*W/r.width,y:(e.touches[0].clientY-r.top)*H/r.height}}cv.addEventListener('mousedown',e=>{e.preventDefault();dw=true;last=null;const p=pos(e);add(p.x,p.y)});window.addEventListener('mousemove',e=>{if(dw){const p=pos(e);add(p.x,p.y)}});window.addEventListener('mouseup',()=>{dw=false;last=null});cv.addEventListener('touchstart',e=>{e.preventDefault();dw=true;last=null;const p=tpos(e);add(p.x,p.y)},{passive:false});cv.addEventListener('touchmove',e=>{e.preventDefault();if(dw&&e.touches.length){const p=tpos(e);add(p.x,p.y)}},{passive:false});cv.addEventListener('touchend',e=>{e.preventDefault();dw=false;last=null},{passive:false});function path(s){const p=new Path2D();for(let i=0;i<=200;i++){const t=i/200*Math.PI*2,pt=tc(t,s);if(i===0)p.moveTo(pt.x,pt.y);else p.lineTo(pt.x,pt.y)}p.closePath();return p}function sp(){const t=Math.random()*Math.PI*2,s=SO*(.25+Math.random()*.75),a=Math.random()*Math.PI*2,v=.3+Math.random()*1.6;pt.push({x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,decay:.005+Math.random()*.015,size:.8+Math.random()*2.2,color:['#c3272b','#b8860b','#8b0000'][Math.floor(Math.random()*3)]})}function render(){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(247,243,234,.92)');g.addColorStop(.5,'rgba(242,237,228,.88)');g.addColorStop(1,'rgba(238,232,220,.93)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.save();ctx.lineCap='round';const TC=[{s:SO,g:14,m:6,c:1.4,a:.14,ca:.32},{s:SM,g:10,m:5,c:1.1,a:.11,ca:.26},{s:SI,g:7,m:3.6,c:.9,a:.09,ca:.2}];for(let i=0;i<3;i++){const t=TC[i],p=path(t.s);ctx.strokeStyle='rgba(43,43,43,.07)';ctx.lineWidth=t.g;ctx.stroke(p);ctx.strokeStyle=`rgba(43,43,43,${t.a})`;ctx.lineWidth=t.m;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([]);ctx.strokeStyle=`rgba(195,39,43,${t.ca})`;ctx.lineWidth=t.c;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([])}ctx.restore();for(let i=1;i<st.length;i++){const a=Math.max(0,Math.min(1,st[i].a));if(a<=.01)continue;ctx.beginPath();ctx.moveTo(st[i-1].x,st[i-1].y);ctx.lineTo(st[i].x,st[i].y);ctx.strokeStyle=`rgba(43,43,43,${a})`;ctx.lineWidth=2;ctx.stroke()}if(fill>.01){ctx.save();ctx.globalAlpha=Math.min(1,fill);ctx.fillStyle='rgba(195,39,43,.35)';ctx.fill(path(SO));ctx.restore()}for(const p of pt){ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();ctx.restore()}if(!done){ctx.fillStyle='rgba(43,43,43,.2)';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,170,4,2);ctx.fill();if(pg>.01){ctx.fillStyle='#c3272b';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,Math.max(170*pg,3),4,2);ctx.fill()}ctx.fillStyle='rgba(43,43,43,.8)';ctx.font='10px "Noto Serif SC"';ctx.textAlign='center';ctx.fillText(Math.round(pg*100)+'%',W/2,H-32);document.getElementById('pg').textContent=Math.round(pg*100)+'%'}}function loop(){for(let i=st.length-1;i>=0;i--){st[i].a-=.02;if(st[i].a<=0)st.splice(i,1)}render();if(done){if(fill<1)fill+=.022;if(fill>=.5&&Math.random()<.5)sp();for(let i=pt.length-1;i>=0;i--){const p=pt[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.01;p.vx*=.996;p.vy*=.996;p.life-=p.decay;if(p.life<=0)pt.splice(i,1)}if(fill>=1)document.getElementById('cov').classList.add('v')}requestAnimationFrame(loop)}function reset(){for(let l=0;l<3;l++){for(const p of L[l])p.hit=false;hc[l]=0}ac[0]=true;ac[1]=false;ac[2]=false;st=[];dw=false;last=null;pg=0;done=false;fill=0;pt=[];document.getElementById('cov').classList.remove('v');document.getElementById('pg').textContent='0%'}document.getElementById('rb').onclick=()=>{if(pg>0&&!confirm('确定重描?'))return;reset()};window.HM={reset};loop()})();
+go(0);
+</script>
+</body>
+</html>
