@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子情书 · 风格样品集</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC',serif;background:#12100e;color:#e8e0d4;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 20px}
+.hdr{text-align:center;margin-bottom:44px}
+.hdr h1{font-family:'Great Vibes',cursive;font-size:clamp(2.6rem,7vw,3.8rem);color:#d4af37;font-weight:400;margin-bottom:8px}
+.hdr p{color:rgba(232,224,212,.6);letter-spacing:3px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;width:100%;max-width:1100px}
+.card{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;text-decoration:none;transition:transform .4s,box-shadow .4s;height:320px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,.55)}
+.card .bg{position:absolute;inset:0}
+.card .info{position:relative;z-index:2;padding:20px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.75))}
+.card h2{font-size:1.3rem;margin-bottom:4px}
+.card .en{font-size:.72rem;letter-spacing:3px;opacity:.7;margin-bottom:8px}
+.card .tags{display:flex;gap:6px;flex-wrap:wrap}
+.card .tags span{font-size:.65rem;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(4px)}
+.card .go{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:0;transition:opacity .3s}
+.card:hover .go{opacity:1}
+/* 巴洛克 */
+.c1 .bg{background:radial-gradient(ellipse at 50% 25%,rgba(122,31,31,.5),transparent 60%),linear-gradient(160deg,#2a1609,#120a05)}
+.c1 h2{color:#f0d878}
+/* 新中式 */
+.c2 .bg{background:radial-gradient(ellipse at 50% 30%,#f7f3ea,#d8ccb2)}
+.c2 h2{color:#2b2b2b}
+.c2 .en{color:#555}
+/* 赛博朋克 */
+.c3 .bg{background:radial-gradient(ellipse at 50% 110%,rgba(255,0,255,.5),transparent 55%),radial-gradient(ellipse at 30% 80%,rgba(0,255,255,.3),transparent 50%),linear-gradient(180deg,#050510,#0d0d24)}
+.c3 h2{color:#00ffff}
+/* 复古 */
+.c4 .bg{background:radial-gradient(ellipse at 50% 30%,#f0e6d4,#d4c09e)}
+.c4 h2{color:#8b5a2b}
+.c4 .en{color:#8b5a2b}
+/* 水彩 */
+.c5 .bg{background:radial-gradient(ellipse at 25% 30%,rgba(242,168,192,.5),transparent 55%),radial-gradient(ellipse at 75% 65%,rgba(184,216,208,.55),transparent 55%),linear-gradient(160deg,#fdf9f3,#f0e6dc)}
+.c5 h2{color:#c97b9a}
+.c5 .en{color:#8a6f8f}
+.ftr{margin-top:40px;color:rgba(232,224,212,.4);font-size:.75rem;letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="hdr">
+    <h1>Love Letter Studio</h1>
+    <p>ELECTRONIC LOVE LETTER · 风格样品集</p>
+</div>
+<div class="grid">
+    <a class="card c1" href="baroque.html">
+        <div class="bg"></div>
+        <div class="go">❦</div>
+        <div class="info"><h2>巴洛克 · 极繁</h2><div class="en">BAROQUE LUXURY</div><div class="tags"><span>金色</span><span>天鹅绒</span><span>天使</span><span>卷草纹</span></div></div>
+    </a>
+    <a class="card c2" href="chinese.html">
+        <div class="bg"></div>
+        <div class="go">❦</div>
+        <div class="info"><h2>新中式 · 水墨</h2><div class="en">CHINESE INK</div><div class="tags"><span>宣纸</span><span>远山</span><span>朱红印章</span><span>诗词</span></div></div>
+    </a>
+    <a class="card c3" href="cyberpunk.html">
+        <div class="bg"></div>
+        <div class="go">❦</div>
+        <div class="info"><h2>赛博朋克 · 霓虹</h2><div class="en">CYBERPUNK</div><div class="tags"><span>霓虹</span><span>网格</span><span>扫描线</span><span>故障</span></div></div>
+    </a>
+    <a class="card c4" href="retro.html">
+        <div class="bg"></div>
+        <div class="go">❦</div>
+        <div class="info"><h2>复古胶片 · 宝丽来</h2><div class="en">RETRO FILM</div><div class="tags"><span>宝丽来</span><span>胶带</span><span>日期戳</span><span>颗粒</span></div></div>
+    </a>
+    <a class="card c5" href="watercolor.html">
+        <div class="bg"></div>
+        <div class="go">❦</div>
+        <div class="info"><h2>水彩晕染 · 花卉</h2><div class="en">WATERCOLOR</div><div class="tags"><span>水彩</span><span>花卉</span><span>晕染</span><span>柔粉</span></div></div>
+    </a>
+</div>
+<div class="ftr">MADE WITH ♡ · 每页含互动画心</div>
+</body>
+</html>
