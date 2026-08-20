@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>赛博朋克 · 霓虹 · 样品</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;500&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff00ff;--cyan:#00ffff;--purple:#7b68ee;--bg:#0a0a1a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;position:fixed;touch-action:none;font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:#e8e8f0}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1s ease;overflow:hidden}
+.scene.active{opacity:1;visibility:visible;pointer-events:all}
+.city{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 110%,rgba(255,0,255,.14),transparent 55%),radial-gradient(ellipse at 20% 80%,rgba(0,255,255,.09),transparent 50%),linear-gradient(180deg,#050510,#0a0a1a 60%,#0d0d24)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,255,.05) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,transparent 25%,black 80%);-webkit-mask-image:linear-gradient(to bottom,transparent 25%,black 80%)}
+.scan{position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px)}
+.holo{position:absolute;z-index:2;pointer-events:none;opacity:.4}
+.art{position:absolute;z-index:4;top:18%;left:0;right:0;text-align:center;padding:0 24px}
+.title{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,9vw,3.4rem);font-weight:900;letter-spacing:5px;color:var(--cyan);text-shadow:0 0 14px rgba(0,255,255,.6),0 0 50px rgba(0,255,255,.3),0 2px 6px rgba(0,0,0,.8)}
+.title.p{color:var(--pink);text-shadow:0 0 14px rgba(255,0,255,.6),0 0 50px rgba(255,0,255,.3)}
+.sub{font-family:'Orbitron',sans-serif;font-size:clamp(.6rem,2.2vw,.8rem);letter-spacing:5px;color:rgba(232,232,240,.7);margin-top:10px}
+.body{font-size:clamp(.92rem,3vw,1.05rem);line-height:2.1;color:rgba(232,232,240,.92);max-width:560px;margin:18px auto 0;text-shadow:0 1px 4px rgba(0,0,0,.9)}
+.sig{font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:3px;color:rgba(255,0,255,.75);text-align:right;max-width:560px;margin:14px auto 0;text-shadow:0 0 10px rgba(255,0,255,.4)}
+.btn{display:inline-block;margin-top:26px;padding:13px 44px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.85rem;letter-spacing:4px;color:var(--cyan);background:transparent;border:1.5px solid var(--cyan);box-shadow:0 0 18px rgba(0,255,255,.3),inset 0 0 10px rgba(0,255,255,.1);transition:all .3s}
+.btn:hover{background:var(--cyan);color:var(--bg);box-shadow:0 0 34px rgba(0,255,255,.6)}
+.hwrap{position:absolute;z-index:4;bottom:11vh;left:50%;transform:translateX(-50%);width:100%;padding:0 16px;text-align:center}
+.ht{font-family:'Orbitron',sans-serif;font-size:1.3rem;letter-spacing:3px;color:var(--pink);text-shadow:0 0 12px rgba(255,0,255,.5);margin-bottom:4px}
+.hh{font-size:.78rem;color:rgba(232,232,240,.75);margin-bottom:10px}
+.cf{position:relative;width:min(320px,84vw);height:min(240px,62vw);margin:0 auto 8px;border-radius:8px;overflow:hidden;background:rgba(10,10,26,.4);box-shadow:0 0 0 1px rgba(0,255,255,.3),0 0 24px rgba(0,255,255,.2)}
+#cv{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+.cov{position:absolute;inset:0;z-index:5;background:rgba(10,10,26,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .5s}
+.cov.v{opacity:1;pointer-events:auto}
+.cb{padding:10px 34px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.8rem;letter-spacing:2px;color:#fff;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:20px}
+.hc{display:flex;justify-content:center;align-items:center;gap:14px;font-size:.82rem;color:var(--cyan)}
+.rb{padding:7px 20px;cursor:pointer;font-size:.76rem;color:var(--cyan);background:rgba(10,10,26,.5);border:1px solid rgba(0,255,255,.4);border-radius:16px}
+.next{position:fixed;bottom:44px;left:50%;transform:translateX(-50%);z-index:60;padding:10px 38px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.78rem;letter-spacing:4px;color:var(--cyan);background:rgba(10,10,26,.55);border:1px solid rgba(0,255,255,.5);border-radius:22px;transition:all .3s}
+.next:hover{background:rgba(0,255,255,.25)}
+.next.h{opacity:0;pointer-events:none}
+.dots{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:6px;padding:4px 10px;border-radius:10px;background:rgba(10,10,26,.6)}
+.pt{width:5px;height:5px;border-radius:50%;background:rgba(0,255,255,.3);cursor:pointer;transition:all .3s}
+.pt.a{background:var(--pink);width:16px}
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<div id="scenes">
+<div class="scene active" id="s0">
+    <div class="city"></div><div class="grid"></div>
+    <div class="art">
+        <div class="title">NIGHT<br>CITY</div>
+        <div class="sub">NEON HEART · 霓虹之心</div>
+        <button class="btn" onclick="go(1)">进入夜城 ❦</button>
+    </div>
+</div>
+<div class="scene" id="s1">
+    <div class="city"></div><div class="grid"></div>
+    <div class="art">
+        <div class="title">SIGNAL</div>
+        <div class="body">在数据洪流里,我截获了一段属于你的信号。它穿过防火墙,绕过加密,最终抵达我心底最柔软的位置。</div>
+        <div class="sig">— CONNECTION ESTABLISHED</div>
+    </div>
+</div>
+<div class="scene" id="s2">
+    <div class="city"></div><div class="grid"></div>
+    <div class="art">
+        <div class="title p">NEON LOVE</div>
+        <div class="body">夜城的霓虹千千万万,唯有你那一盏,是我愿意一生凝视的光。在这座喧嚣到失真的城市里,你是我唯一的真实。</div>
+        <div class="sig">— ENCRYPTED WITH LOVE</div>
+    </div>
+</div>
+<div class="scene" id="s3">
+    <div class="city"></div><div class="grid"></div>
+    <div class="hwrap">
+        <div class="ht">DRAW YOUR HEART</div>
+        <div class="hh">沿霓虹轨道,描摹你的心</div>
+        <div class="cf"><canvas id="cv"></canvas><div class="cov" id="cov"><div style="font-family:'Orbitron';color:var(--cyan)">SIGNAL LOCKED</div><button class="cb" onclick="go(4)">DECRYPT</button></div></div>
+        <div class="hc"><span id="pg">0%</span><button class="rb" id="rb">↺ REDRAW</button></div>
+    </div>
+</div>
+<div class="scene" id="s4">
+    <div class="city"></div><div class="grid"></div>
+    <div class="art">
+        <div class="title p">FOREVER<br>ONLINE</div>
+        <div class="body">只要霓虹不灭,我的心跳就永远与你相连。</div>
+    </div>
+</div>
+</div>
+<div class="dots" id="dots"></div>
+<button class="next" id="next" onclick="go(cur+1)">NEXT ❦</button>
+<script>
+const N=5;let cur=0;
+function go(i){if(i<0||i>=N)return;cur=i;for(let k=0;k<N;k++)document.getElementById('s'+k).classList.toggle('active',k===i);document.querySelectorAll('.pt').forEach((d,k)=>d.classList.toggle('a',k===i));document.getElementById('next').classList.toggle('h',i===0||i===3||i>=N-1);if(i===3)setTimeout(()=>window.HM&&HM.reset(),350)}
+const dd=document.getElementById('dots');for(let i=0;i<N;i++){const d=document.createElement('div');d.className='pt'+(i===0?' a':'');d.onclick=()=>go(i);dd.appendChild(d)}
+(function(){'use strict';const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),W=320,H=240,CX=W/2,CY=H/2-2,OY=5.5,SO=5.0,SM=3.7,SI=2.4,HIT=14,STEP=4,SAM=150,DEN=2000,WT=[.4,.35,.25],UL=.5,CP=.85;const dpr=Math.min(devicePixelRatio||1,3);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);function hx(t){return 16*Math.pow(Math.sin(t),3)}function hy(t){return 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)}function tc(t,s){return{x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s}}function gen(n,s){const d=[];for(let i=0;i<=DEN;i++){const t=i/DEN*Math.PI*2;d.push({t,x:hx(t),y:hy(t)})}const c=[0];for(let i=1;i<=DEN;i++){const dx=d[i].x-d[i-1].x,dy=d[i].y-d[i-1].y;c.push(c[i-1]+Math.sqrt(dx*dx+dy*dy))}const tot=c[DEN],o=[];for(let i=0;i<n;i++){const tg=i/n*tot;let lo=0,hi=DEN;while(lo<hi){const m=(lo+hi)>>1;if(c[m]<tg)lo=m+1;else hi=m}const p=tc(d[Math.min(lo,DEN)].t,s);o.push({x:p.x,y:p.y,hit:false})}return o}const L=[gen(SAM,SO),gen(SAM,SM),gen(SAM,SI)],hc=[0,0,0],ac=[true,false,false];let st=[],dw=false,last=null,pg=0,done=false,fill=0,pt=[];function calc(){let t=0;for(let i=0;i<3;i++)if(ac[i])t+=WT[i]*(hc[i]/L[i].length);return Math.min(1,t)}function proc(x,y){if(done)return;const ts=HIT*HIT;for(let l=0;l<3;l++){if(!ac[l])continue;for(let i=0;i<L[l].length;i++){if(L[l][i].hit)continue;const dx=L[l][i].x-x,dy=L[l][i].y-y;if(dx*dx+dy*dy<=ts){L[l][i].hit=true;hc[l]++}}}pg=calc();const r0=hc[0]/L[0].length,r1=hc[1]/L[1].length;if(r0>=UL&&!ac[1])ac[1]=true;if(r1>=UL&&!ac[2])ac[2]=true;if(!done&&pg>=CP){done=true}}function seg(x1,y1,x2,y2){const dx=x2-x1,dy=y2-y1,ds=Math.sqrt(dx*dx+dy*dy),n=Math.max(1,Math.floor(ds/STEP));for(let i=1;i<=n;i++){const t=i/n;proc(x1+dx*t,y1+dy*t);st.push({x:x1+dx*t,y:y1+dy*t,a:1})}}function add(x,y){if(last)seg(last.x,last.y,x,y);else{proc(x,y);st.push({x,y,a:1})}last={x,y};if(st.length>600)st.splice(0,st.length-600)}function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}function tpos(e){const r=cv.getBoundingClientRect();return{x:(e.touches[0].clientX-r.left)*W/r.width,y:(e.touches[0].clientY-r.top)*H/r.height}}cv.addEventListener('mousedown',e=>{e.preventDefault();dw=true;last=null;const p=pos(e);add(p.x,p.y)});window.addEventListener('mousemove',e=>{if(dw){const p=pos(e);add(p.x,p.y)}});window.addEventListener('mouseup',()=>{dw=false;last=null});cv.addEventListener('touchstart',e=>{e.preventDefault();dw=true;last=null;const p=tpos(e);add(p.x,p.y)},{passive:false});cv.addEventListener('touchmove',e=>{e.preventDefault();if(dw&&e.touches.length){const p=tpos(e);add(p.x,p.y)}},{passive:false});cv.addEventListener('touchend',e=>{e.preventDefault();dw=false;last=null},{passive:false});function path(s){const p=new Path2D();for(let i=0;i<=200;i++){const t=i/200*Math.PI*2,pt=tc(t,s);if(i===0)p.moveTo(pt.x,pt.y);else p.lineTo(pt.x,pt.y)}p.closePath();return p}function sp(){const t=Math.random()*Math.PI*2,s=SO*(.25+Math.random()*.75),a=Math.random()*Math.PI*2,v=.3+Math.random()*1.8;pt.push({x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,decay:.005+Math.random()*.015,size:.8+Math.random()*2.4,color:['#00ffff','#ff00ff','#7b68ee','#ffffff'][Math.floor(Math.random()*4)]})}function render(){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(10,10,26,.88)');g.addColorStop(.5,'rgba(16,16,36,.8)');g.addColorStop(1,'rgba(10,10,26,.9)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.save();ctx.lineCap='round';const TC=[{s:SO,g:14,m:6,c:1.4,a:.16,ca:.36},{s:SM,g:10,m:5,c:1.1,a:.13,ca:.28},{s:SI,g:7,m:3.6,c:.9,a:.11,ca:.22}];for(let i=0;i<3;i++){const t=TC[i],p=path(t.s);ctx.strokeStyle='rgba(0,255,255,.08)';ctx.lineWidth=t.g;ctx.shadowBlur=12;ctx.shadowColor='rgba(0,255,255,.3)';ctx.stroke(p);ctx.shadowBlur=0;ctx.strokeStyle=`rgba(0,255,255,${t.a})`;ctx.lineWidth=t.m;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([]);ctx.strokeStyle=`rgba(255,0,255,${t.ca})`;ctx.lineWidth=t.c;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([])}ctx.restore();for(let i=1;i<st.length;i++){const a=Math.max(0,Math.min(1,st[i].a));if(a<=.01)continue;ctx.beginPath();ctx.moveTo(st[i-1].x,st[i-1].y);ctx.lineTo(st[i].x,st[i].y);ctx.strokeStyle=`rgba(0,255,255,${a})`;ctx.lineWidth=2;ctx.stroke()}if(fill>.01){ctx.save();ctx.globalAlpha=Math.min(1,fill);const fg=ctx.createRadialGradient(CX,CY,8,CX,CY,72);fg.addColorStop(0,'#00ffff');fg.addColorStop(.55,'#7b68ee');fg.addColorStop(1,'#2a1a5e');ctx.fillStyle=fg;ctx.fill(path(SO));ctx.restore()}for(const p of pt){ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();ctx.restore()}if(!done){ctx.fillStyle='rgba(255,255,255,.15)';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,170,4,2);ctx.fill();if(pg>.01){ctx.fillStyle='#00ffff';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,Math.max(170*pg,3),4,2);ctx.fill()}ctx.fillStyle='rgba(0,255,255,.85)';ctx.font='10px Orbitron';ctx.textAlign='center';ctx.fillText(Math.round(pg*100)+'%',W/2,H-32);document.getElementById('pg').textContent=Math.round(pg*100)+'%'}}function loop(){for(let i=st.length-1;i>=0;i--){st[i].a-=.02;if(st[i].a<=0)st.splice(i,1)}render();if(done){if(fill<1)fill+=.022;if(fill>=.5&&Math.random()<.5)sp();for(let i=pt.length-1;i>=0;i--){const p=pt[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.01;p.vx*=.996;p.vy*=.996;p.life-=p.decay;if(p.life<=0)pt.splice(i,1)}if(fill>=1)document.getElementById('cov').classList.add('v')}requestAnimationFrame(loop)}function reset(){for(let l=0;l<3;l++){for(const p of L[l])p.hit=false;hc[l]=0}ac[0]=true;ac[1]=false;ac[2]=false;st=[];dw=false;last=null;pg=0;done=false;fill=0;pt=[];document.getElementById('cov').classList.remove('v');document.getElementById('pg').textContent='0%'}document.getElementById('rb').onclick=()=>{if(pg>0&&!confirm('确定重画?'))return;reset()};window.HM={reset};loop()})();
+go(0);
+</script>
+</body>
+</html>
