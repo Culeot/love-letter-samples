@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>水彩晕染 · 花卉 · 样品</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Noto+Serif+SC:wght@300;500&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f2a8c0;--mint:#b8d8d0;--lav:#c9b8e0;--ink:#6b5a6e;--cream:#fbf7f0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;position:fixed;touch-action:none;font-family:'Noto Serif SC',serif;background:#f5efe8;color:var(--ink)}
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.2s ease;overflow:hidden}
+.scene.active{opacity:1;visibility:visible;pointer-events:all}
+/* 水彩底 */
+.wc{position:absolute;inset:0;background:radial-gradient(ellipse at 25% 30%,rgba(242,168,192,.28),transparent 55%),radial-gradient(ellipse at 75% 65%,rgba(184,216,208,.3),transparent 55%),radial-gradient(ellipse at 60% 20%,rgba(201,184,224,.22),transparent 50%),linear-gradient(160deg,#fdf9f3,#f7efe6)}
+/* 水彩花朵(SVG晕染) */
+.flower{position:absolute;z-index:2;pointer-events:none;opacity:.85;filter:blur(.3px)}
+.fp{position:absolute;width:7px;height:7px;border-radius:50%;filter:blur(5px);z-index:1;opacity:.7;pointer-events:none}
+.art{position:absolute;z-index:4;top:16%;left:0;right:0;text-align:center;padding:0 26px}
+.title{font-family:'Dancing Script',cursive;font-size:clamp(2.6rem,11vw,3.8rem);color:#c97b9a;margin-bottom:4px;text-shadow:0 2px 8px rgba(201,123,154,.2)}
+.sub{font-size:clamp(.72rem,2.6vw,.9rem);letter-spacing:6px;color:rgba(107,90,110,.65);margin-bottom:6px}
+.body{font-size:clamp(.93rem,3.1vw,1.06rem);line-height:2.15;color:rgba(107,90,110,.9);max-width:560px;margin:16px auto 0;text-align:left}
+.sig{font-family:'Dancing Script',cursive;font-size:1.5rem;color:#8a6f8f;text-align:right;max-width:560px;margin:12px auto 0}
+.btn{display:inline-block;margin-top:24px;padding:12px 42px;cursor:pointer;font-size:.95rem;letter-spacing:4px;color:#fff;background:linear-gradient(135deg,#f2a8c0,#b8d8d0);border:none;border-radius:30px;box-shadow:0 6px 20px rgba(201,123,154,.3);transition:all .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(201,123,154,.4)}
+.hwrap{position:absolute;z-index:4;bottom:11vh;left:50%;transform:translateX(-50%);width:100%;padding:0 16px;text-align:center}
+.ht{font-family:'Dancing Script',cursive;font-size:2.2rem;color:#c97b9a;margin-bottom:2px}
+.hh{font-size:.78rem;color:rgba(107,90,110,.65);letter-spacing:2px;margin-bottom:10px}
+.cf{position:relative;width:min(320px,84vw);height:min(240px,62vw);margin:0 auto 8px;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.55);box-shadow:0 6px 22px rgba(201,123,154,.18)}
+#cv{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+.cov{position:absolute;inset:0;z-index:5;background:rgba(251,247,240,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .6s}
+.cov.v{opacity:1;pointer-events:auto}
+.cb{padding:10px 34px;cursor:pointer;font-size:.9rem;letter-spacing:3px;color:#fff;background:linear-gradient(135deg,#f2a8c0,#b8d8d0);border:none;border-radius:24px}
+.hc{display:flex;justify-content:center;align-items:center;gap:14px;font-size:.82rem;color:var(--ink)}
+.rb{padding:7px 20px;cursor:pointer;font-size:.76rem;color:#c97b9a;background:rgba(255,255,255,.7);border:1px solid rgba(201,123,154,.4);border-radius:16px}
+.next{position:fixed;bottom:44px;left:50%;transform:translateX(-50%);z-index:60;padding:10px 38px;cursor:pointer;font-size:.85rem;letter-spacing:4px;color:#c97b9a;background:rgba(255,255,255,.8);border:1px solid rgba(201,123,154,.4);border-radius:24px;box-shadow:0 4px 14px rgba(201,123,154,.15);transition:all .3s}
+.next:hover{background:linear-gradient(135deg,#f2a8c0,#b8d8d0);color:#fff}
+.next.h{opacity:0;pointer-events:none}
+.dots{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:6px;padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.8)}
+.pt{width:5px;height:5px;border-radius:50%;background:rgba(107,90,110,.3);cursor:pointer;transition:all .3s}
+.pt.a{background:#f2a8c0;width:16px}
+</style>
+</head>
+<body>
+<div id="scenes">
+<div class="scene active" id="s0">
+    <div class="wc"></div>
+    <svg class="flower" style="width:130px;top:8%;left:7%;transform:rotate(-12deg)" viewBox="0 0 130 130"><g fill="#f2a8c0" opacity=".7"><ellipse cx="50" cy="65" rx="22" ry="30"/><ellipse cx="80" cy="65" rx="22" ry="30"/><ellipse cx="65" cy="48" rx="30" ry="22"/><ellipse cx="65" cy="82" rx="30" ry="22"/></g><circle cx="65" cy="65" r="14" fill="#e8c4d0"/></svg>
+    <svg class="flower" style="width:100px;bottom:12%;right:8%;transform:rotate(15deg)" viewBox="0 0 130 130"><g fill="#b8d8d0" opacity=".75"><ellipse cx="50" cy="65" rx="20" ry="28"/><ellipse cx="80" cy="65" rx="20" ry="28"/><ellipse cx="65" cy="48" rx="28" ry="20"/><ellipse cx="65" cy="82" rx="28" ry="20"/></g><circle cx="65" cy="65" r="13" fill="#d8ece6"/></svg>
+    <div class="fp" style="width:70px;height:70px;background:#f2a8c0;top:22%;right:20%"></div>
+    <div class="fp" style="width:50px;height:50px;background:#b8d8d0;bottom:24%;left:16%"></div>
+    <div class="art">
+        <div class="title">A Letter in Bloom</div>
+        <div class="sub">一 封 花 开 的 信</div>
+        <button class="btn" onclick="go(1)">展 信 ❦</button>
+    </div>
+</div>
+<div class="scene" id="s1">
+    <div class="wc"></div>
+    <svg class="flower" style="width:110px;top:10%;right:8%;transform:rotate(20deg)" viewBox="0 0 130 130"><g fill="#c9b8e0" opacity=".7"><ellipse cx="50" cy="65" rx="20" ry="28"/><ellipse cx="80" cy="65" rx="20" ry="28"/><ellipse cx="65" cy="48" rx="28" ry="20"/><ellipse cx="65" cy="82" rx="28" ry="20"/></g><circle cx="65" cy="65" r="13" fill="#e0d6f0"/></svg>
+    <div class="fp" style="width:55px;height:55px;background:#c9b8e0;top:30%;left:12%"></div>
+    <div class="art">
+        <div class="title">初见的花</div>
+        <div class="body">花开时节,我在风里闻见了你的名字。像一瓣落在纸上的水彩,晕开成满纸的温柔与雀跃。</div>
+        <div class="sig">— 第一朵花开</div>
+    </div>
+</div>
+<div class="scene" id="s2">
+    <div class="wc"></div>
+    <svg class="flower" style="width:120px;bottom:10%;left:6%;transform:rotate(-8deg)" viewBox="0 0 130 130"><g fill="#f2a8c0" opacity=".65"><ellipse cx="50" cy="65" rx="22" ry="30"/><ellipse cx="80" cy="65" rx="22" ry="30"/><ellipse cx="65" cy="48" rx="30" ry="22"/><ellipse cx="65" cy="82" rx="30" ry="22"/></g><circle cx="65" cy="65" r="14" fill="#e8c4d0"/></svg>
+    <div class="fp" style="width:60px;height:60px;background:#f2a8c0;top:18%;left:20%"></div>
+    <div class="fp" style="width:40px;height:40px;background:#b8d8d0;bottom:20%;right:14%"></div>
+    <div class="art">
+        <div class="title">四季</div>
+        <div class="body">春樱夏荷,秋桂冬梅。愿与你走过每一季的花期,把日子过成水彩,晕染出最温柔的颜色。</div>
+        <div class="sig">— 花开花落,皆是你</div>
+    </div>
+</div>
+<div class="scene" id="s3">
+    <div class="wc"></div>
+    <div class="hwrap">
+        <div class="ht">画心</div>
+        <div class="hh">沿花瓣色轨道,晕染一颗心</div>
+        <div class="cf"><canvas id="cv"></canvas><div class="cov" id="cov"><div style="font-family:'Dancing Script';font-size:1.9rem;color:#c97b9a">心花怒放</div><button class="cb" onclick="go(4)">绽放</button></div></div>
+        <div class="hc"><span id="pg">0%</span><button class="rb" id="rb">↺ 重晕</button></div>
+    </div>
+</div>
+<div class="scene" id="s4">
+    <div class="wc"></div>
+    <svg class="flower" style="width:150px;top:14%;left:50%;transform:translateX(-50%)" viewBox="0 0 130 130"><g fill="#f2a8c0" opacity=".6"><ellipse cx="50" cy="65" rx="22" ry="30"/><ellipse cx="80" cy="65" rx="22" ry="30"/><ellipse cx="65" cy="48" rx="30" ry="22"/><ellipse cx="65" cy="82" rx="30" ry="22"/></g><circle cx="65" cy="65" r="14" fill="#e8c4d0"/></svg>
+    <div class="art" style="top:54%">
+        <div class="title">永不凋零</div>
+        <div class="body">愿我们的爱,像这封信里藏着的花,永不凋零。</div>
+    </div>
+</div>
+</div>
+<div class="dots" id="dots"></div>
+<button class="next" id="next" onclick="go(cur+1)">NEXT ❦</button>
+<script>
+const N=5;let cur=0;
+function go(i){if(i<0||i>=N)return;cur=i;for(let k=0;k<N;k++)document.getElementById('s'+k).classList.toggle('active',k===i);document.querySelectorAll('.pt').forEach((d,k)=>d.classList.toggle('a',k===i));document.getElementById('next').classList.toggle('h',i===0||i===3||i>=N-1);if(i===3)setTimeout(()=>window.HM&&HM.reset(),350)}
+const dd=document.getElementById('dots');for(let i=0;i<N;i++){const d=document.createElement('div');d.className='pt'+(i===0?' a':'');d.onclick=()=>go(i);dd.appendChild(d)}
+(function(){'use strict';const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),W=320,H=240,CX=W/2,CY=H/2-2,OY=5.5,SO=5.0,SM=3.7,SI=2.4,HIT=14,STEP=4,SAM=150,DEN=2000,WT=[.4,.35,.25],UL=.5,CP=.85;const dpr=Math.min(devicePixelRatio||1,3);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);function hx(t){return 16*Math.pow(Math.sin(t),3)}function hy(t){return 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)}function tc(t,s){return{x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s}}function gen(n,s){const d=[];for(let i=0;i<=DEN;i++){const t=i/DEN*Math.PI*2;d.push({t,x:hx(t),y:hy(t)})}const c=[0];for(let i=1;i<=DEN;i++){const dx=d[i].x-d[i-1].x,dy=d[i].y-d[i-1].y;c.push(c[i-1]+Math.sqrt(dx*dx+dy*dy))}const tot=c[DEN],o=[];for(let i=0;i<n;i++){const tg=i/n*tot;let lo=0,hi=DEN;while(lo<hi){const m=(lo+hi)>>1;if(c[m]<tg)lo=m+1;else hi=m}const p=tc(d[Math.min(lo,DEN)].t,s);o.push({x:p.x,y:p.y,hit:false})}return o}const L=[gen(SAM,SO),gen(SAM,SM),gen(SAM,SI)],hc=[0,0,0],ac=[true,false,false];let st=[],dw=false,last=null,pg=0,done=false,fill=0,pt=[];function calc(){let t=0;for(let i=0;i<3;i++)if(ac[i])t+=WT[i]*(hc[i]/L[i].length);return Math.min(1,t)}function proc(x,y){if(done)return;const ts=HIT*HIT;for(let l=0;l<3;l++){if(!ac[l])continue;for(let i=0;i<L[l].length;i++){if(L[l][i].hit)continue;const dx=L[l][i].x-x,dy=L[l][i].y-y;if(dx*dx+dy*dy<=ts){L[l][i].hit=true;hc[l]++}}}pg=calc();const r0=hc[0]/L[0].length,r1=hc[1]/L[1].length;if(r0>=UL&&!ac[1])ac[1]=true;if(r1>=UL&&!ac[2])ac[2]=true;if(!done&&pg>=CP){done=true}}function seg(x1,y1,x2,y2){const dx=x2-x1,dy=y2-y1,ds=Math.sqrt(dx*dx+dy*dy),n=Math.max(1,Math.floor(ds/STEP));for(let i=1;i<=n;i++){const t=i/n;proc(x1+dx*t,y1+dy*t);st.push({x:x1+dx*t,y:y1+dy*t,a:1})}}function add(x,y){if(last)seg(last.x,last.y,x,y);else{proc(x,y);st.push({x,y,a:1})}last={x,y};if(st.length>600)st.splice(0,st.length-600)}function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}function tpos(e){const r=cv.getBoundingClientRect();return{x:(e.touches[0].clientX-r.left)*W/r.width,y:(e.touches[0].clientY-r.top)*H/r.height}}cv.addEventListener('mousedown',e=>{e.preventDefault();dw=true;last=null;const p=pos(e);add(p.x,p.y)});window.addEventListener('mousemove',e=>{if(dw){const p=pos(e);add(p.x,p.y)}});window.addEventListener('mouseup',()=>{dw=false;last=null});cv.addEventListener('touchstart',e=>{e.preventDefault();dw=true;last=null;const p=tpos(e);add(p.x,p.y)},{passive:false});cv.addEventListener('touchmove',e=>{e.preventDefault();if(dw&&e.touches.length){const p=tpos(e);add(p.x,p.y)}},{passive:false});cv.addEventListener('touchend',e=>{e.preventDefault();dw=false;last=null},{passive:false});function path(s){const p=new Path2D();for(let i=0;i<=200;i++){const t=i/200*Math.PI*2,pt=tc(t,s);if(i===0)p.moveTo(pt.x,pt.y);else p.lineTo(pt.x,pt.y)}p.closePath();return p}function sp(){const t=Math.random()*Math.PI*2,s=SO*(.25+Math.random()*.75),a=Math.random()*Math.PI*2,v=.3+Math.random()*1.5;pt.push({x:CX+hx(t)*s,y:CY-(hy(t)+OY)*s,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,decay:.005+Math.random()*.015,size:.8+Math.random()*2.2,color:['#f2a8c0','#b8d8d0','#c9b8e0'][Math.floor(Math.random()*3)]})}function render(){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(253,249,243,.94)');g.addColorStop(.5,'rgba(250,245,238,.9)');g.addColorStop(1,'rgba(247,240,232,.95)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.save();ctx.lineCap='round';const TC=[{s:SO,g:14,m:6,c:1.4,a:.15,ca:.35},{s:SM,g:10,m:5,c:1.1,a:.12,ca:.28},{s:SI,g:7,m:3.6,c:.9,a:.1,ca:.22}];for(let i=0;i<3;i++){const t=TC[i],p=path(t.s);ctx.strokeStyle='rgba(201,123,154,.08)';ctx.lineWidth=t.g;ctx.shadowBlur=12;ctx.shadowColor='rgba(201,123,154,.2)';ctx.stroke(p);ctx.shadowBlur=0;ctx.strokeStyle=`rgba(201,123,154,${t.a})`;ctx.lineWidth=t.m;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([]);ctx.strokeStyle=`rgba(184,216,208,${t.ca})`;ctx.lineWidth=t.c;ctx.setLineDash([9,6]);ctx.stroke(p);ctx.setLineDash([])}ctx.restore();for(let i=1;i<st.length;i++){const a=Math.max(0,Math.min(1,st[i].a));if(a<=.01)continue;ctx.beginPath();ctx.moveTo(st[i-1].x,st[i-1].y);ctx.lineTo(st[i].x,st[i].y);ctx.strokeStyle=`rgba(201,123,154,${a})`;ctx.lineWidth=2;ctx.stroke()}if(fill>.01){ctx.save();ctx.globalAlpha=Math.min(1,fill);ctx.fillStyle='rgba(242,168,192,.4)';ctx.fill(path(SO));ctx.restore()}for(const p of pt){ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();ctx.restore()}if(!done){ctx.fillStyle='rgba(107,90,110,.18)';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,170,4,2);ctx.fill();if(pg>.01){ctx.fillStyle='#f2a8c0';ctx.beginPath();ctx.roundRect((W-170)/2,H-24,Math.max(170*pg,3),4,2);ctx.fill()}ctx.fillStyle='rgba(107,90,110,.75)';ctx.font='10px "Noto Serif SC"';ctx.textAlign='center';ctx.fillText(Math.round(pg*100)+'%',W/2,H-32);document.getElementById('pg').textContent=Math.round(pg*100)+'%'}}function loop(){for(let i=st.length-1;i>=0;i--){st[i].a-=.02;if(st[i].a<=0)st.splice(i,1)}render();if(done){if(fill<1)fill+=.022;if(fill>=.5&&Math.random()<.5)sp();for(let i=pt.length-1;i>=0;i--){const p=pt[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.01;p.vx*=.996;p.vy*=.996;p.life-=p.decay;if(p.life<=0)pt.splice(i,1)}if(fill>=1)document.getElementById('cov').classList.add('v')}requestAnimationFrame(loop)}function reset(){for(let l=0;l<3;l++){for(const p of L[l])p.hit=false;hc[l]=0}ac[0]=true;ac[1]=false;ac[2]=false;st=[];dw=false;last=null;pg=0;done=false;fill=0;pt=[];document.getElementById('cov').classList.remove('v');document.getElementById('pg').textContent='0%'}document.getElementById('rb').onclick=()=>{if(pg>0&&!confirm('确定重晕?'))return;reset()};window.HM={reset};loop()})();
+go(0);
+</script>
+</body>
+</html>
